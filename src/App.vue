@@ -1,32 +1,90 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="chart-container">
+      <fusioncharts
+      :type="type"
+      :width="width"
+      :height="height"
+      :dataformat="dataFormat"
+      :dataSource="dataSource"
+      >
+      </fusioncharts>
+      <h1>hello {{this.$store.getters['getStats']}}</h1>
     </div>
-    <router-view />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Vue from 'vue';
+import VueFusionCharts from 'vue-fusioncharts';
+import FusionCharts from 'fusioncharts';
+import Column2D from 'fusioncharts/fusioncharts.charts';
+import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 
-#nav {
-  padding: 30px;
+Vue.use(VueFusionCharts, FusionCharts, Column2D, FusionTheme);
+// STEP 2: Prepare the data
+const chartData = [
+    {
+      label: "Venezuela",
+      value: "290"
+    },
+    {
+      label: "Saudi",
+      value: "260"
+    },
+    {
+      label: "Canada",
+      value: "180"
+    },
+    {
+      label: "Iran",
+      value: "140"
+    },
+    {
+      label: "Russia",
+      value: "115"
+    },
+    {
+      label: "UAE",
+      value: "100"
+    },
+    {
+      label: "US",
+      value: "30"
+    },
+    {
+      label: "China",
+      value: "30"
+    }
+  ];
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+// STEP 3: Configure your chart
+const dataSource = {
+  chart: {
+    caption: "Countries With Most Oil Reserves [2017-18]",
+    subcaption: "In MMbbl = One Million barrels",
+    xaxisname: "Country",
+    yaxisname: "Reserves (MMbbl)",
+    numbersuffix: "K",
+    theme: "fusion"
+  },
+  data: chartData
+  };
 
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  mounted: () => {
+console.log('stst',this.$store.stats)
+
+  },
+  data() {
+    return {
+      type: "column2d",
+      renderAt: "chart-container",
+      width: "550",
+      height: "350",
+      dataFormat: "json",
+      dataSource
     }
   }
 }
-</style>
+</script>
